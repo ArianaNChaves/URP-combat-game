@@ -12,6 +12,7 @@ public class PlayerMoveState : PlayerBaseState
     private float _verticalVelocity;
     private float _currentSpeed;
     private bool _isRunning;
+    private bool _isTargeting;
     private Vector3 _currentMovement;
 
     public PlayerMoveState(PlayerStateMachine stateMachine) : base(stateMachine)
@@ -23,7 +24,9 @@ public class PlayerMoveState : PlayerBaseState
     {
         _currentSpeed = stateMachine.MovementSpeed;
         stateMachine.InputReader.RunEvent += Run;
+        stateMachine.InputReader.TargetEvent += OnTarget;
     }
+    
 
     public override void Tick(float deltaTime)
     {
@@ -52,8 +55,11 @@ public class PlayerMoveState : PlayerBaseState
         stateMachine.Animator.SetFloat(IdleTime, _idleTimer);
         stateMachine.Animator.SetFloat(Speed, horizontalMovement.magnitude);
         stateMachine.Animator.SetFloat(WalkSpeed, GetWalkRunBlend());
-        
-        FaceMovementDirection(horizontalMovement, deltaTime);
+
+        if (!_isTargeting)
+        {
+            FaceMovementDirection(horizontalMovement, deltaTime); 
+        }
 
     }
 
@@ -61,6 +67,8 @@ public class PlayerMoveState : PlayerBaseState
     {
         _currentMovement = Vector3.zero;
         stateMachine.InputReader.RunEvent -= Run;
+        stateMachine.InputReader.TargetEvent -= OnTarget;
+
 
     }
 
@@ -133,6 +141,15 @@ public class PlayerMoveState : PlayerBaseState
     private void Run(bool isRunning)
     {
         _isRunning = isRunning;
+    }
+    
+    private void OnTarget(bool isTargeting)
+    {
+        _isTargeting = isTargeting;
+        if (_isTargeting && stateMachine.Targeter.SelectTarget()) //si quiero targetear y tengo a quien targetear cambia de state
+        {
+            stateMachine.SwitchState(new PlayerTargetingState(stateMachine));
+        }
     }
     
 }

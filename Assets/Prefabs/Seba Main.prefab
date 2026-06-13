@@ -357,6 +357,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97476d2a240fe3f498fbcb05c03e9138, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Targeter
+  targets: []
 --- !u!135 &2800784989678106351
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -489,6 +490,7 @@ MonoBehaviour:
   <InputReader>k__BackingField: {fileID: 3078440646950469008}
   <Controller>k__BackingField: {fileID: 7146937742520459082}
   <Animator>k__BackingField: {fileID: 8289641584803527915}
+  <Targeter>k__BackingField: {fileID: 6560370789520885748}
   <MovementSpeed>k__BackingField: 4
   <RunSpeed>k__BackingField: 6
   <MovementAcceleration>k__BackingField: 12

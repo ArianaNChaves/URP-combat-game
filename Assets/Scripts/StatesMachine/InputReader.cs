@@ -6,8 +6,10 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
 {
     public event Action RolEvent;
     public event Action<bool> RunEvent;
+    public event Action<bool> TargetEvent;
         
-    public Vector2 MovementValue {get; private set;}    
+    public Vector2 MovementValue {get; private set;}  
+    private bool _flag = false;
         
     private Controls _controls;
     private void Start()
@@ -48,5 +50,14 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
         {
             RunEvent?.Invoke(false);
         }
+    }
+
+    public void OnTarget(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            _flag = !_flag;
+        }
+        TargetEvent?.Invoke(_flag);
     }
 }
